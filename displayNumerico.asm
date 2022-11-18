@@ -1,4 +1,5 @@
 
+//NINTENDO VA A 60CICLES/S
 
 
 mai:
@@ -39,7 +40,7 @@ do{
             }
             prom=sum/MAX_CAPTURAS;
             convertir_numero(prom, 
-            &Vdigitos, &Dent, &Ddec)
+            Vdigitos, &Dent, &Ddec)
 
 
             swiWaitForVBlank()
@@ -84,9 +85,10 @@ strb r6, [r5]
 ldr r0, =REG_DATA
 ldrh r1, [r0]
 and r9, r1 , #0b11111111
-mov r2, r1, lsr #3
+mov r2, r1, lsr #8
+bic r2, #15         @fiquem els bits a 0
 mov r3 , #1
-orr r2, r3
+and r2, r3
 strb r2, [r0]        @esta mal deplaaçat
 
 ldr r4, =VSegments
