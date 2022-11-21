@@ -15,17 +15,17 @@ main{
 
 inicializaciones()
 int nfrec=0
+int palabra
 
 do{
 tareas_independientes()
-i =  siguiente_palabra(char *string)
+palabra =  siguiente_palabra(char *string)
 
 num_fon= pal2fon(palabra, fonemas, fcs)
 
 
 int frec = 100/fcs[nfrec]
 activar_timer0( frec)
-nfrec++
 if(nfrec=>num_fon){
     nfrec=0
     desactivar_timer0() 
@@ -37,8 +37,18 @@ printf(char *format,...)
 
 } while(1)
 }
+      
+
+Gestionar el envio de de fonemas al registro de E/S : 
+-detectar si se ha agotado el tiempo actual -> activar el siguiente fonema, si hay pendientes
+        increme nfrec++
+
+
 
 RSi:
+push{lr}
+
+pop{pc}
 
 
 
