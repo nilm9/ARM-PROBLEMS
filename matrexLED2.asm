@@ -77,9 +77,9 @@ beq .LfiTimer0
 cmp r1 , #7
 movhs r1, #0
 
-mov r3, #FF
-mov r4, #FF
-mov r5, #1
+mov r3, #0xFF
+mov r4, #0xFF
+mov r5, #0x80
 ldr r7, =matrix
 
 mov r6, #1  @contador matrix
@@ -88,7 +88,7 @@ mov r2, #0
 cmp r6, #8
 bhi .LfiBucle
 
-mla r8, r6, r1, r7
+mla r8, r7, r1, 8
 ldrb r9, [r8]
 cmp r9, #1
 moveq r2, #1
