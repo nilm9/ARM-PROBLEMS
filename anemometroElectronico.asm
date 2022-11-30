@@ -1,5 +1,5 @@
 unsigned short tics =0
-unsigned char freqVent =0
+unsigned short freqVent =0
 unsigned char wait=0
 
 efectúa la gestión del biestable J-K para medir la 
@@ -10,20 +10,22 @@ main{
     float vel=0
     int count=0
 
-do{
+do
+{
     tareas_independientes()
     @cada 3s
-    if(tics >= 300){
+    if (tics >= 300)
+    {
         tics=0
-        vel = 1 * ticsVel
+        vel = 55.88 * freqVent / 150.0;;
         
-
-    swiWaitForVBlank() 
-    printf("%d:\t %f ",++count, vel) 
-    vel=0
+        swiWaitForVBlank() 
+        printf("%d:\t %f ",++count, vel) 
+        vel = 0;
+        freqVent = 0;
     }
 
-} while(1)
+} while(1);
 
 }
 
@@ -49,14 +51,17 @@ ldr r0, =tics
 ldrh r1, [r0]
 add r1, #1
 strh r1, [r0]
-ldr r0, =0x0A000000
+
+@comprovar wait
+
+mov r0, #0x0A000000
 ldr r1, [r0]
 ldr r2, =freqVent
-ldrb r3, [r2]
-mov r5, r1 lsr #5   @estat pin 5
-and r5, #1
+ldrh r3, [r2]
+mov r5, r1, lsr #5   @estat pin 5
+@;and r5, #1
 tst r5, #1
-bne .Lfinal     @esta a zero no fem res
+beq .Lfinal     @esta a zero no fem res
 add r3, #1      @si esta a 1 infrementem freq vent
 
 @resetejem
@@ -65,14 +70,14 @@ strb r1, [r0]
 ldr r6, =wait
 ldrb r7, [r6]
 add r7, #1
-cmp r7, #10
+cmp r7, #2
 blo .Lfinal
 mov r7, #0
-and r1, #0x04
+orr r1, #0x04
 strb r1, [r0]
 
 .Lfinal:
-
+strb r7, [r6]
 pop{r0-r7,pc}
 
 
@@ -87,16 +92,17 @@ mientras que en los bits 1 y 0 hay que indicar el código de la frecuencia de en
 
 inicializar_timer0_01(unsigned int frec)
 push{r0-r3,lr}
-ldr r1, =523657
+mov r1, r0
+ldr r0, =523657
 swi 9
-rsb r0, r0 @girem al signe com a la fomrula
+rsb r0, r0, #0 @girem al signe com a la fomrula
 ldr r1, =TIMER0_DATA
-str r0, [r1]
-ldr r0, =TIMER0_CR
-ldrb r1, [r0]
-bic r1, #0xFF
-mov r3, 0b11000001
-orr r1, r3
+strh r0, [r1]
+ldr r0, =TIMER0_CR 
+@;ldrb r1, [r0]
+@;bic r1, #0xFF
+mov r3, #0b11000001
+@;orr r1, r3
 strb r3, [r0]
 pop{r0-r3,pc}
 
